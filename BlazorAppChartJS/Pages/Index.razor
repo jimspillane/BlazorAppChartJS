@@ -1,0 +1,26 @@
+﻿@page "/"
+@inject IJSRuntime JsRuntime
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<div>
+    <button @onclick="ShowChart">Show Chart</button>
+    <canvas @ref="chartjs" id="myChart"></canvas>
+</div>
+
+@code
+{
+    private ElementReference chartjs;
+
+    async Task ShowChart()
+    {
+        var _module = await JsRuntime.InvokeAsync<JSObjectReference>("import", "./js/charttest.js");
+
+        await _module.InvokeVoidAsync("MakeChart", chartjs);
+
+        await _module.DisposeAsync();
+    }
+
+}
